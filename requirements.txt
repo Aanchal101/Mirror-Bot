@@ -26,7 +26,7 @@ tenacity
 TgCrypto
 https://github.com/Aanchal101/shanti-api/archive/refs/heads/master.zip
 https://github.com/Aanchal101/gazetitoo-l/archive/refs/tags/v1.1.0.zip
-yt_dlp
+https://github.com/Aanchal101/utube-pulp/archive/refs/heads/master.zip
 urllib3
 gunicorn
 anytree
