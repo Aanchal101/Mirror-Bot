@@ -33,10 +33,14 @@ def _create_accounts(service, project, count):
             service.projects()
             .serviceAccounts()
             .create(
-                name="projects/" + project,
-                body={"accountId": aid, "serviceAccount": {"displayName": aid}},
+                name=f"projects/{project}",
+                body={
+                    "accountId": aid,
+                    "serviceAccount": {"displayName": aid},
+                },
             )
         )
+
     batch.execute()
 
 
@@ -66,14 +70,14 @@ def _def_batch_resp(id, resp, exception):
         if str(exception).startswith("<HttpError 429"):
             sleep(sleep_time / 100)
         else:
-            print(str(exception))
+            print(exception)
 
 
 # Project Creation Batch Handler
 def _pc_resp(id, resp, exception):
     global project_create_ops
     if exception is not None:
-        print(str(exception))
+        print(exception)
     else:
         for i in resp.values():
             project_create_ops.append(i)
@@ -265,7 +269,7 @@ def serviceaccountfactory(
             ste = selected_projects
         elif enable_services == "*":
             ste = _get_projects(cloud)
-        services = [i + ".googleapis.com" for i in services]
+        services = [f'{i}.googleapis.com' for i in services]
         print("Enabling services")
         _enable_services(serviceusage, ste, services)
     if create_sas:
@@ -395,9 +399,7 @@ if __name__ == "__main__":
                 % args.credentials
             )
     if args.quick_setup:
-        opt = "*"
-        if args.new_only:
-            opt = "~"
+        opt = "~" if args.new_only else "*"
         args.services = ["iam", "drive"]
         args.create_projects = args.quick_setup
         args.enable_services = opt
@@ -422,7 +424,7 @@ if __name__ == "__main__":
             if resp:
                 print("Projects (%d):" % len(resp))
                 for i in resp:
-                    print("  " + i)
+                    print(f"  {i}")
             else:
                 print("No projects.")
         elif args.list_sas:

@@ -101,13 +101,13 @@ class MirrorListener(listeners.MirrorListeners):
             if name is None:  # when pyrogram's media.file_name is of NoneType
                 name = os.listdir(f"{DOWNLOAD_DIR}{self.uid}")[0]
             m_path = f"{DOWNLOAD_DIR}{self.uid}/{name}"
-        if self.isZip or self.isTar :
+        if self.isZip or self.isTar:
             try:
                 with download_dict_lock:
                     download_dict[self.uid] = TarStatus(name, m_path, size)
-                if self.isZip :
+                if self.isZip:
                     pswd = self.pswd
-                    path = m_path + ".zip"
+                    path = f'{m_path}.zip'
                     LOGGER.info(f'Zip: orig_path: {m_path}, zip_path: {path}')
                     if pswd is not None:
                         subprocess.run(["7z", "a", "-mx=0", f"-p{pswd}", path, m_path])
@@ -131,10 +131,12 @@ class MirrorListener(listeners.MirrorListeners):
                 with download_dict_lock:
                     download_dict[self.uid] = ExtractStatus(name, m_path, size)
                 pswd = self.pswd
-                if pswd is not None:
-                    archive_result = subprocess.run(["pextract", m_path, pswd])
-                else:
-                    archive_result = subprocess.run(["extract", m_path])
+                archive_result = (
+                    subprocess.run(["pextract", m_path, pswd])
+                    if pswd is not None
+                    else subprocess.run(["extract", m_path])
+                )
+
                 if archive_result.returncode == 0:
                     threading.Thread(target=os.remove, args=(m_path,)).start()
                     LOGGER.info(f"Deleting archive : {m_path}")
@@ -247,12 +249,12 @@ class MirrorListener(listeners.MirrorListeners):
             if LOGS_CHATS:
                 try:
                     for i in LOGS_CHATS:
-                        msg1 = f"<b>Files Leeched</b>\n"
+                        msg1 = "<b>Files Leeched</b>\\n"
                         msg1 += f"<b>By:</b> {uname}\n"
                         msg1 += f'<b>Total Files:</b> {count}\n'
                         bot.sendMessage(chat_id=i, text=msg1, parse_mode=ParseMode.HTML)
                 except Exception as e:
-                    LOGGER.warning(e)                                           
+                    LOGGER.warning(e)
             with download_dict_lock:
                 try:
                     fs_utils.clean_download(download_dict[self.uid].path())
